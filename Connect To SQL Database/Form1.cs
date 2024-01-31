@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Connect_To_SQL_Database
 {
@@ -24,6 +25,7 @@ namespace Connect_To_SQL_Database
         // Global Declaration of SqlConnection and SqlCommand
         SqlConnection connection = new SqlConnection("Data Source=SACRAMENTO\\SQLEXPRESS;Initial Catalog=Employees;Integrated Security=True;TrustServerCertificate=True");
         SqlCommand command = new SqlCommand();
+        int identifier;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -62,6 +64,45 @@ namespace Connect_To_SQL_Database
 
         private void button1_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+           
+
+            connection.Open();
+
+            identifier = Convert.ToInt32(dataGridView1.SelectedCells[0].Value.ToString());
+
+            MessageBox.Show("Viewing User ID NO: " + identifier);
+
+            command = connection.CreateCommand();
+            command.CommandType = CommandType.Text;
+            command.CommandText = "SELECT * FROM Users WHERE ID = '" + identifier + "'";
+            command.ExecuteNonQuery();
+
+            SqlDataAdapter adapter = new SqlDataAdapter(command);
+            DataTable dataTable = new DataTable();
+            adapter.Fill(dataTable);
+            dataGridView1.DataSource = dataTable;
+
+            SqlDataReader dataRow = command.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataRow.Read())
+            {
+                textBox1.Text = dataRow.GetString(1).ToString();
+                textBox2.Text = dataRow.GetString(2).ToString();
+                comboBox1.Text = dataRow.GetString(3).ToString();
+
+            }
+            connection.Close();
+            
 
         }
     }

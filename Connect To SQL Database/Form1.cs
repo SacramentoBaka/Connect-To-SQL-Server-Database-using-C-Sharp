@@ -64,7 +64,17 @@ namespace Connect_To_SQL_Database
 
         private void button1_Click(object sender, EventArgs e)
         {
+            connection.Open();
+            string query = "DELETE FROM Users WHERE ID = " + identifier + "";
+            command = new SqlCommand(query, connection);
+            command.ExecuteNonQuery();
+            connection.Close();
 
+            MessageBox.Show("User ID NO: " + identifier + " Deleted successfully..");
+            displayData();
+            textBox1.Text = "";
+            textBox2.Text = "";
+            comboBox1.Text = "";
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -102,8 +112,11 @@ namespace Connect_To_SQL_Database
 
             }
             connection.Close();
-            
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            displayData();
         }
     }
 }

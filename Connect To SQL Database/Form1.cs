@@ -118,5 +118,17 @@ namespace Connect_To_SQL_Database
         {
             displayData();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            connection.Open();
+            string query = "UPDATE Users SET First_Name = '" + textBox1.Text + "', LAST_Name = '" + textBox2.Text + "', Gender = '" + comboBox1.Text + "' WHERE ID = " + identifier + "";
+            command = new SqlCommand(query, connection);
+            command.ExecuteNonQuery();
+            connection.Close();
+
+            MessageBox.Show("Entry Updated Successfully");
+            displayData(); // Calling the Display Method.
+        }
     }
 }
